@@ -1,0 +1,36 @@
+var data = db.Calenders.Where(d=> d.cal_Id==1).FirstOrDefault();
+
+            if (data != null)
+            {
+
+                return;
+            }
+
+            for (int i = 0; i < 365; i++)
+            {
+
+
+                Calender cal = new Calender();
+
+               
+                cal.cal_Date = DateTime.Now.AddDays(i);
+                DayOfWeek z = cal.cal_Date.Value.DayOfWeek;
+                cal.wDay = z.ToString();
+                cal.wNo = (cal.cal_Date.Value.Day / 7)+1; 
+                cal.wHour =8;
+                if (cal.wDay=="Friday")
+                {
+                    cal.isHoliday = true;
+                }
+                else
+                {
+                    cal.isHoliday = false;
+                }
+                db.Calenders.Add(cal);
+                db.SaveChanges();
+            }
+            MessageBox.Show("Data Saved!!");
+
+            cal_dataGridView.AutoGenerateColumns = false;
+            cal_dataGridView.DataSource = null;
+            cal_dataGridView.DataSource = db.Calenders.ToList();
